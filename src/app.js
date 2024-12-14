@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 // Import Routes
-const exampleRoute = require('./routes/exampleRoute');
+const sanctionsRoute = require('./routes/sanctionsRoute');
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(express.json()); // Parse JSON request bodies
 app.use(cors());         // Enable CORS
 
 // Routes
-app.use('/api', exampleRoute); // Integrate the example route
+app.use('/api/sanctions', sanctionsRoute); // Integrate the example route
 
 // Test Route
 app.get('/', (req, res) => {
