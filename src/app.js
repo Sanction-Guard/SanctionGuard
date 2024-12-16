@@ -7,6 +7,11 @@ const sanctionsRoute = require('./routes/sanctionsRoute');
 
 const app = express();
 
+const pdfRoute = require('./routes/pdfRoute');
+
+
+app.use('/api/pdf', pdfRoute);
+
 // Middleware
 app.use(express.json()); // Parse JSON request bodies
 app.use(cors());         // Enable CORS
