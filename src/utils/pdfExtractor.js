@@ -18,35 +18,63 @@ const extractTextFromPDF = async (filePath) => {
 };
 
 /**
- * Processes extracted text to filter and structure the data.
- * Adds a blank line after each individual's name group.
+ * Processes extracted text to filter and extract names and DOBs.
  * @param {string} text - Extracted text from the PDF.
- * @returns {string[]} - Filtered and structured names with blank lines between groups.
+ * @returns {Object[]} - List of objects containing names and DOBs.
  */
 const processExtractedText = (text) => {
+    //to split the input text into lines.
     const lines = text.split('\n');
 
-    // Filter lines containing "Name:" and process them
-    const nameLines = lines.filter(line => line.includes('Name:'));
+    // Array to store extracted information
+    const extractedData = [];
 
-    // Extract and clean names
-    const namesWithSpaces = nameLines.flatMap(line => {
-        // Extract the portion after "Name:"
-        const match = line.match(/Name:\s*(.*)/);
-        if (match) {
-            // Split by digits or other delimiters and remove "script original" and similar phrases
-            const cleanedNames = match[1]
-                .split(/\d+\:|(?:\(.?script.?\))/i) // Split by digits followed by colon or script notes
-                .map(name => name.trim()) // Trim whitespace
-                .filter(name => name.length > 0); // Remove empty names
+    // Regex pattern for extracting name (name written in original script is not included here)
+    const nameRegex = /Name:\s*(.*)/i;
 
-            // Add a blank line after processing one individual's names
-            return [...cleanedNames, '  ']; // Add empty string to represent a blank line
+    // for DOB
+    const dobRegex = /DOB:\s*(?:Approximately\s*|Between\s*)?(\d{1,2}\s*[A-Za-z]{3,}\.\s*\d{4}|\d{4}(?:\s*and\s*\d{4})?|\d{4}(?:-\d{2}-\d{2})?)/i; //add any other formats if you found.currently includes between,approximately,standalone year and dates in YYYY-MM-DD.
+    // added format XXth Feb. 2023 (UN format)
+
+    //Regex for Id formats.add if you found anymore than this.formatting regex should be more then enough.This includes "SSN", "National ID", "Ration Card", country names
+    const idRegex = /(?:\b(?:National\s*ID|Ration\s*Card|SSN|NIN|Sudan|National\s*Identification)\b\s*[:]?\s*)?([A-Za-z]{0,3}\s*[\d-–/\\()]{6,})(?:\s*\((.*?)\))?/gi;
+
+
+    // Iterate through lines
+    lines.forEach(line => {
+        const data = {};
+
+        // Extract names
+        const nameMatch = line.match(nameRegex);
+        if (nameMatch) {
+            data.names = nameMatch[1]
+                .split(/\d+:\s*/) // Split by numbered prefixes (after n:))
+                .map(name => name.trim())
+                .filter(name => name.length > 0 && !name.includes('original script'));
         }
-        return [];
+
+        // Extract DOB
+        const dobMatch = line.match(dobRegex);
+        if (dobMatch) {
+            data.dob = dobMatch[1];
+        }
+
+        //matching id numbers
+        const idmatch = line.match(idRegex);
+        if (idmatch){
+            data.id = idmatch[1];
+        }
+
+        if (Object.keys(data).length > 0) {
+            extractedData.push(data);
+        }
     });
 
-    return namesWithSpaces;
+    return extractedData;
 };
 
 module.exports = { extractTextFromPDF, processExtractedText };
+
+
+//30.01.2025 : code is extracting ID,NAME and DOB.everthing is fine until data extraction.- Create APIs to upload and process PDF files.
+//    - Include validation, error handling for unsupported file formats, and performance optimizations. These should be fulfilled.
