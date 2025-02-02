@@ -1,0 +1,15 @@
+[33m72a581f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mPdfExtraction[m[33m)[m Resolved merge conflicts
+[33mf899112[m Resolved merge conflicts
+[33m8b257ee[m[33m ([m[1;31morigin/Extractionprocess[m[33m)[m extracting ID,name and DOB
+[33m8dbc3d1[m Merge branch 'PdfExtraction' of https://github.com/Kiza-1015/SanctionGuard into pdfExtraction
+[33mfcf310f[m[33m ([m[1;31morigin/PdfExtraction[m[33m)[m pdf name extraction
+[33mece565b[m Merge branch 'main' of https://github.com/Kiza-1015/SanctionGuard into pdfExtraction
+[33m66bbd0b[m[33m ([m[1;32mmain[m[33m)[m Merge pull request #2 from Kiza-1015/pdfExtraction
+[33me7e13e7[m Merge branch 'main' of https://github.com/Kiza-1015/SanctionGuard into pdfExtraction
+[33mb12af4a[m Merge pull request #1 from Kiza-1015/Kisara-1
+[33m8ae45b6[m package json
+[33m754e17e[m Extracting name from the pdf
+[33m1628fe3[m Added placeholder APIs for main functionalities
+[33m409ed78[m Add files via upload
+[33m5922733[m Set up the project structure and initialize the API.
+[33md05e855[m Initial commit

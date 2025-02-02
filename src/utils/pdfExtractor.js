@@ -18,53 +18,53 @@ const extractTextFromPDF = async (filePath) => {
 };
 
 /**
- * Processes extracted text to filter and extract names and DOBs.
+ * Processes extracted text to filter and extract names, DOBs, and NICs.
  * @param {string} text - Extracted text from the PDF.
- * @returns {Object[]} - List of objects containing names and DOBs.
+ * @returns {Object[]} - List of objects containing names, DOBs, and NICs.
  */
 const processExtractedText = (text) => {
-    //to split the input text into lines.
+    // Split the input text into lines
     const lines = text.split('\n');
 
     // Array to store extracted information
     const extractedData = [];
 
-    // Regex pattern for extracting name (name written in original script is not included here)
-    const nameRegex = /Name:\s*(.*)/i;
+    // Regex pattern for extracting name
+    const nameRegex = /Name:\s*([A-Za-z\s.]+?)(?:\s*a\.k\.a\s*([A-Za-z\s.]+))?\s*Title:/i;
 
-    // for DOB
-    const dobRegex = /DOB:\s*(?:Approximately\s*|Between\s*)?(\d{1,2}\s*[A-Za-z]{3,}\.\s*\d{4}|\d{4}(?:\s*and\s*\d{4})?|\d{4}(?:-\d{2}-\d{2})?)/i; //add any other formats if you found.currently includes between,approximately,standalone year and dates in YYYY-MM-DD.
-    // added format XXth Feb. 2023 (UN format)
+    // Regex pattern for extracting DOB
+    const dobRegex = /DOB:\s*(\d{2}\.\d{2}\.\d{4})/i;
 
-    //Regex for Id formats.add if you found anymore than this.formatting regex should be more then enough.This includes "SSN", "National ID", "Ration Card", country names
-    const idRegex = /(?:\b(?:National\s*ID|Ration\s*Card|SSN|NIN|Sudan|National\s*Identification)\b\s*[:]?\s*)?([A-Za-z]{0,3}\s*[\d-–/\\()]{6,})(?:\s*\((.*?)\))?/gi;
-
+    // Regex pattern for extracting NIC (National Identification Number)
+    const nicRegex = /NIC:\s*([A-Z0-9]+)/i;
 
     // Iterate through lines
     lines.forEach(line => {
         const data = {};
 
-        // Extract names
+        // Extract names (primary name and alias)
         const nameMatch = line.match(nameRegex);
         if (nameMatch) {
-            data.names = nameMatch[1]
-                .split(/\d+:\s*/) // Split by numbered prefixes (after n:))
-                .map(name => name.trim())
-                .filter(name => name.length > 0 && !name.includes('original script'));
+            data.name = nameMatch[1].trim(); // Primary name
+            if (nameMatch[2]) {
+                data.knownAs = nameMatch[2].trim(); // Alias (a.k.a. name)
+            }
+
         }
 
         // Extract DOB
         const dobMatch = line.match(dobRegex);
         if (dobMatch) {
-            data.dob = dobMatch[1];
+            data.dob = dobMatch[1]; // Extract the DOB
         }
 
-        //matching id numbers
-        const idmatch = line.match(idRegex);
-        if (idmatch){
-            data.id = idmatch[1];
+        // Extract NIC
+        const nicMatch = line.match(nicRegex);
+        if (nicMatch) {
+            data.nic = nicMatch[1]; // Extract the NIC
         }
 
+        // If any data was extracted, add it to the result array
         if (Object.keys(data).length > 0) {
             extractedData.push(data);
         }
@@ -74,7 +74,3 @@ const processExtractedText = (text) => {
 };
 
 module.exports = { extractTextFromPDF, processExtractedText };
-
-
-//30.01.2025 : code is extracting ID,NAME and DOB.everthing is fine until data extraction.- Create APIs to upload and process PDF files.
-//    - Include validation, error handling for unsupported file formats, and performance optimizations. These should be fulfilled.
