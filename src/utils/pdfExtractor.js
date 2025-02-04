@@ -24,7 +24,7 @@ const extractTextFromPDF = async (filePath) => {
  */
 const processExtractedText = (text) => {
     // Split text into individual entries using reference numbers
-    const entryRegex = /(EN\/CA\/\d{4}\/\d{2}|IN\/CA\/\d{4}\/\d{2})([\s\S]*?)(?=EN\/CA\/\d{4}\/\d{2}|IN\/CA\/\d{4}\/\d{2}|$)/g;
+    const entryRegex = /(EN\/CA\/\d{4}\/\d{2,}|IN\/CA\/\d{4}\/\d{2,})([\s\S]*?)(?=EN\/CA\/\d{4}\/\d{2,}|IN\/CA\/\d{4}\/\d{2,}|$)/g;
     const entries = [];
     let match;
     while ((match = entryRegex.exec(text)) !== null) {

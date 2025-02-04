@@ -5,7 +5,7 @@ const connectDB = async () => {
         await mongoose.connect(process.env.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            serverApi: mongoose.version // For MongoDB 8.0+ compatibility
+            serverApi: mongoose.version
         });
         console.log('Connected to MongoDB Atlas');
     } catch (error) {
