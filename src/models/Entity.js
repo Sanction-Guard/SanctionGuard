@@ -16,6 +16,10 @@ const entitySchema = new mongoose.Schema({
         type: String,
         trim: true
     }],
+    addresses: [{
+        type: String,
+        trim: true
+    }],
     created_at: {
         type: Date,
         default: Date.now

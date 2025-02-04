@@ -7,16 +7,16 @@ const personSchema = new mongoose.Schema({
         unique: true,
         match: /^IN\/CA\/\d{4}\/\d{2}$/
     },
-    first_name: {
+    firstName: {
         type: String,
         required: true,
         trim: true
     },
-    second_name: {
+    secondName: {
         type: String,
         trim: true
     },
-    third_name: {
+    thirdName: {
         type: String,
         trim: true
     },

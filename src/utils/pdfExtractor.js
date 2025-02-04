@@ -40,28 +40,41 @@ const processExtractedText = (text) => {
     entries.forEach(({ reference, content }) => {
         // Check if the entry is an entity (starts with "EN")
         if (reference.startsWith("EN")) {
-            const entityMatch = content.match(/Name:\s*([^\n]+)\s*(?:a\.k\.a\s+(.+?))?/is);
+            // Extract Name, trimming at Address:, Other Information:, or Start Date:
+            const entityMatch = content.match(/Name:\s*([^\n]+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is);
+            const addressMatch = content.match(/Address:\s*([\s\S]*?)(?=\nOther Information:|$)/is);
+
             if (entityMatch) {
                 const name = entityMatch[1].trim();
-                const aka = entityMatch[2]
-                    ? entityMatch[2].split(/\s*,\s*|\s+a\.k\.a\s+/i)
+                const aka = content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is)
+                    ? content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is)[1]
+                        .split(/\s*,\s*|\s+a\.k\.a\s+/i)
                         .map(a => a.trim())
                         .filter(a => a)
                     : [];
 
+                const addresses = [];
+                if (addressMatch) {
+                    const addressText = addressMatch[1].trim();
+                    // Split addresses by Roman numerals (i), (ii), (iii), etc.
+                    const addressParts = addressText.split(/\s*\([xiv]+\)\s*/i);
+                    addresses.push(...addressParts.map(addr => addr.trim()).filter(addr => addr));
+                }
+
                 entities.push({
                     reference_number: reference,
                     name: name,
-                    aka: aka
+                    aka: aka,
+                    addresses: addresses
                 });
             }
         } else if (reference.startsWith("IN")) {
             // Process individuals
             const individualEntry = {
                 reference_number: reference,
-                first_name: '',
-                second_name: '',
-                third_name: '',
+                firstName: '',
+                secondName: '',
+                thirdName: '',
                 aka: [],
                 dob: '',
                 nic: ''
@@ -70,9 +83,9 @@ const processExtractedText = (text) => {
             const nameMatch = content.match(/Name:\s*((?:.(?!a\.k\.a))*?)(?:\s+a\.k\.a\s+(.+?))?(?=\s+Title:)/is);
             if (nameMatch) {
                 const nameParts = nameMatch[1].trim().split(/\s+/);
-                individualEntry.first_name = nameParts[0] || '';
-                individualEntry.second_name = nameParts[1] || '';
-                individualEntry.third_name = nameParts.slice(2).join(' ') || '';
+                individualEntry.firstName = nameParts[0] || '';
+                individualEntry.secondName = nameParts[1] || '';
+                individualEntry.thirdName = nameParts.slice(2).join(' ') || '';
 
                 if (nameMatch[2]) {
                     individualEntry.aka = nameMatch[2].split(/\s*,\s*|\s+a\.k\.a\s+/i)
