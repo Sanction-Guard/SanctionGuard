@@ -18,16 +18,15 @@ const extractTextFromPDF = async (filePath) => {
 };
 
 /**
- * Processes extracted text to filter and extract names, DOBs, and NICs.
+ * Processes extracted text to filter and extract names, DOBs, NICs, and entities.
  * @param {string} text - Extracted text from the PDF.
- * @returns {Object[]} - List of objects containing names, DOBs, and NICs.
+ * @returns {Object} - Contains lists of individuals and entities.
  */
 const processExtractedText = (text) => {
     // Split text into individual entries using reference numbers
-    const entryRegex = /(IN\/CA\/\d{4}\/\d{2})([\s\S]*?)(?=IN\/CA\/\d{4}\/\d{2}|$)/g;
+    const entryRegex = /(EN\/CA\/\d{4}\/\d{2}|IN\/CA\/\d{4}\/\d{2})([\s\S]*?)(?=EN\/CA\/\d{4}\/\d{2}|IN\/CA\/\d{4}\/\d{2}|$)/g;
     const entries = [];
     let match;
-
     while ((match = entryRegex.exec(text)) !== null) {
         entries.push({
             reference: match[1],
@@ -35,54 +34,68 @@ const processExtractedText = (text) => {
         });
     }
 
-    const result = {};
+    const individuals = [];
+    const entities = [];
 
     entries.forEach(({ reference, content }) => {
-        const entry = {
-            first_name: '',
-            second_name: '',
-            third_name: '',
-            aka: [],
-            dob: '',
-            nic: '',
-            reference_number: reference
-        };
+        // Check if the entry is an entity (starts with "EN")
+        if (reference.startsWith("EN")) {
+            const entityMatch = content.match(/Name:\s*([^\n]+)\s*(?:a\.k\.a\s+(.+?))?/is);
+            if (entityMatch) {
+                const name = entityMatch[1].trim();
+                const aka = entityMatch[2]
+                    ? entityMatch[2].split(/\s*,\s*|\s+a\.k\.a\s+/i)
+                        .map(a => a.trim())
+                        .filter(a => a)
+                    : [];
 
-        // Enhanced name extraction with multiple aliases
-        const nameMatch = content.match(/Name:\s*((?:.(?!a\.k\.a))*?)(?:\s+a\.k\.a\s+(.+?))?(?=\s+Title:)/is);
-        if (nameMatch) {
-            // Split the primary name into parts
-            const nameParts = nameMatch[1].trim().split(/\s+/);
-
-            // Assign name parts to first_name, second_name, and third_name
-            entry.first_name = nameParts[0] || '';
-            entry.second_name = nameParts[1] || '';
-            entry.third_name = nameParts.slice(2).join(' ') || '';
-
-            // Extract aliases (a.k.a. names)
-            if (nameMatch[2]) {
-                entry.aka = nameMatch[2].split(/\s*,\s*|\s+a\.k\.a\s+/i)
-                    .map(a => a.trim())
-                    .filter(a => a);
+                entities.push({
+                    reference_number: reference,
+                    name: name,
+                    aka: aka
+                });
             }
-        }
+        } else if (reference.startsWith("IN")) {
+            // Process individuals
+            const individualEntry = {
+                reference_number: reference,
+                first_name: '',
+                second_name: '',
+                third_name: '',
+                aka: [],
+                dob: '',
+                nic: ''
+            };
 
-        // Robust date extraction with different formats
-        const dobMatch = content.match(/DOB:\s*(\d{2}[.-]\d{2}[.-]\d{4})/i);
-        if (dobMatch) {
-            entry.dob = dobMatch[1].replace(/-/g, '.');
-        }
+            const nameMatch = content.match(/Name:\s*((?:.(?!a\.k\.a))*?)(?:\s+a\.k\.a\s+(.+?))?(?=\s+Title:)/is);
+            if (nameMatch) {
+                const nameParts = nameMatch[1].trim().split(/\s+/);
+                individualEntry.first_name = nameParts[0] || '';
+                individualEntry.second_name = nameParts[1] || '';
+                individualEntry.third_name = nameParts.slice(2).join(' ') || '';
 
-        // Comprehensive NIC pattern matching
-        const nicMatch = content.match(/NIC:\s*([A-Z0-9]+)/i);
-        if (nicMatch) {
-            entry.nic = nicMatch[1].toUpperCase();
-        }
+                if (nameMatch[2]) {
+                    individualEntry.aka = nameMatch[2].split(/\s*,\s*|\s+a\.k\.a\s+/i)
+                        .map(a => a.trim())
+                        .filter(a => a);
+                }
+            }
 
-        result[reference] = entry;
+            const dobMatch = content.match(/DOB:\s*(\d{2}[.-]\d{2}[.-]\d{4})/i);
+            if (dobMatch) {
+                individualEntry.dob = dobMatch[1].replace(/-/g, '.');
+            }
+
+            const nicMatch = content.match(/NIC:\s*([A-Z0-9]+)/i);
+            if (nicMatch) {
+                individualEntry.nic = nicMatch[1].toUpperCase();
+            }
+
+            individuals.push(individualEntry);
+        }
     });
 
-    return result;
+    return { individuals, entities };
 };
 
 module.exports = { extractTextFromPDF, processExtractedText };

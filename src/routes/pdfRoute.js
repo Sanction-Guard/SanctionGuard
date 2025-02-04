@@ -1,10 +1,10 @@
 const express = require('express');
 const multer = require('multer');
-const { extractTextFromPDF, processExtractedText } = require('../utils/pdfExtractor');
 const fs = require('fs');
 const mongoose = require('mongoose');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { extractTextFromPDF, processExtractedText } = require('../utils/pdfExtractor');
 const Person = require('../models/Person');
+const Entity = require('../models/Entity');
 
 const router = express.Router();
 
@@ -28,10 +28,10 @@ const connectDB = async () => {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             serverApi: {
-                version: ServerApiVersion.v1,
+                version: '1',
                 strict: true,
                 deprecationErrors: true,
-            }
+            },
         });
         console.log('Connected to MongoDB Atlas');
     } catch (error) {
@@ -60,10 +60,10 @@ router.post('/upload-pdf', upload.single('file'), async (req, res) => {
             return res.status(400).json({ error: 'The uploaded file is not a valid PDF.' });
         }
 
-        const processedData = processExtractedText(extractedText);
-        const entries = Object.values(processedData);
+        const { individuals, entities } = processExtractedText(extractedText);
 
-        const bulkOps = entries.map(entry => ({
+        // Save individuals to the 'individuals' collection
+        const individualBulkOps = individuals.map(entry => ({
             updateOne: {
                 filter: { reference_number: entry.reference_number },
                 update: { $set: entry },
@@ -71,19 +71,35 @@ router.post('/upload-pdf', upload.single('file'), async (req, res) => {
             }
         }));
 
-        const result = await Person.bulkWrite(bulkOps);
+        const individualResult = await Person.bulkWrite(individualBulkOps);
+
+        // Save entities to the 'entities' collection
+        const entityBulkOps = entities.map(entity => ({
+            updateOne: {
+                filter: { reference_number: entity.reference_number },
+                update: { $set: entity },
+                upsert: true
+            }
+        }));
+
+        const entityResult = await Entity.bulkWrite(entityBulkOps);
+
         fs.unlinkSync(filePath);
 
         res.json({
             message: 'Data stored successfully',
-            insertedCount: result.upsertedCount,
-            modifiedCount: result.modifiedCount
+            individuals: {
+                insertedCount: individualResult.upsertedCount,
+                modifiedCount: individualResult.modifiedCount
+            },
+            entities: {
+                insertedCount: entityResult.upsertedCount,
+                modifiedCount: entityResult.modifiedCount
+            }
         });
-
     } catch (error) {
         console.error('Error processing PDF:', error.message);
         if (req.file) fs.unlinkSync(req.file.path);
-
         res.status(500).json({
             error: 'Failed to process the PDF',
             details: error.message

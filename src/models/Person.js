@@ -39,6 +39,6 @@ const personSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
-});
+}, { collection: 'individuals' }); // Explicitly set the collection name to 'individuals'
 
 module.exports = mongoose.model('Person', personSchema);
