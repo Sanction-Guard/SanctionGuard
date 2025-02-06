@@ -316,17 +316,6 @@ function startScheduler() {
 
 async function main() {
     try {
-        // const resourcesOK = await checkDatabaseAndResources();
-        // if (!resourcesOK) {
-        //     throw new Error('Database and resource check failed');
-        // }
-
-
-        // await connectDB();
-        // const result = await fetchAndParseXML();
-        // await processIndividuals(result);
-        // await processEntities(result);
-        // console.log('Processing completed successfully');
         startScheduler();
     } catch (error) {
         console.error('Application error:', error.message);
