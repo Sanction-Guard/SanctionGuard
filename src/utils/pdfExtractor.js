@@ -18,35 +18,97 @@ const extractTextFromPDF = async (filePath) => {
 };
 
 /**
- * Processes extracted text to filter and structure the data.
- * Adds a blank line after each individual's name group.
+ * Processes extracted text to filter and extract names, DOBs, NICs, and entities.
  * @param {string} text - Extracted text from the PDF.
- * @returns {string[]} - Filtered and structured names with blank lines between groups.
+ * @returns {Object} - Contains lists of individuals and entities.
  */
 const processExtractedText = (text) => {
-    const lines = text.split('\n');
+    // Split text into individual entries using reference numbers
+    const entryRegex = /(EN\/CA\/\d{4}\/\d{2,}|IN\/CA\/\d{4}\/\d{2,})([\s\S]*?)(?=EN\/CA\/\d{4}\/\d{2,}|IN\/CA\/\d{4}\/\d{2,}|$)/g;
+    const entries = [];
+    let match;
+    while ((match = entryRegex.exec(text)) !== null) {
+        entries.push({
+            reference: match[1],
+            content: match[2].trim()
+        });
+    }
 
-    // Filter lines containing "Name:" and process them
-    const nameLines = lines.filter(line => line.includes('Name:'));
+    const individuals = [];
+    const entities = [];
 
-    // Extract and clean names
-    const namesWithSpaces = nameLines.flatMap(line => {
-        // Extract the portion after "Name:"
-        const match = line.match(/Name:\s*(.*)/);
-        if (match) {
-            // Split by digits or other delimiters and remove "script original" and similar phrases
-            const cleanedNames = match[1]
-                .split(/\d+\:|(?:\(.?script.?\))/i) // Split by digits followed by colon or script notes
-                .map(name => name.trim()) // Trim whitespace
-                .filter(name => name.length > 0); // Remove empty names
+    entries.forEach(({ reference, content }) => {
+        // Check if the entry is an entity (starts with "EN")
+        if (reference.startsWith("EN")) {
+            // Extract Name, trimming at Address:, Other Information:, or Start Date:
+            const entityMatch = content.match(/Name:\s*([^\n]+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is);
+            const addressMatch = content.match(/Address:\s*([\s\S]*?)(?=\nOther Information:|$)/is);
 
-            // Add a blank line after processing one individual's names
-            return [...cleanedNames, '  ']; // Add empty string to represent a blank line
+            if (entityMatch) {
+                const name = entityMatch[1].trim();
+                const aka = content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is)
+                    ? content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is)[1]
+                        .split(/\s*,\s*|\s+a\.k\.a\s+/i)
+                        .map(a => a.trim())
+                        .filter(a => a)
+                    : [];
+
+                const addresses = [];
+                if (addressMatch) {
+                    const addressText = addressMatch[1].trim();
+                    // Split addresses by Roman numerals (i), (ii), (iii), etc.
+                    const addressParts = addressText.split(/\s*\([xiv]+\)\s*/i);
+                    addresses.push(...addressParts.map(addr => addr.trim()).filter(addr => addr));
+                }
+
+                entities.push({
+                    reference_number: reference,
+                    name: name,
+                    aka: aka,
+                    addresses: addresses
+                });
+            }
+        } else if (reference.startsWith("IN")) {
+            // Process individuals
+            const individualEntry = {
+                reference_number: reference,
+                firstName: '',
+                secondName: '',
+                thirdName: '',
+                aka: [],
+                dob: '',
+                nic: ''
+            };
+
+            const nameMatch = content.match(/Name:\s*((?:.(?!a\.k\.a))*?)(?:\s+a\.k\.a\s+(.+?))?(?=\s+Title:)/is);
+            if (nameMatch) {
+                const nameParts = nameMatch[1].trim().split(/\s+/);
+                individualEntry.firstName = nameParts[0] || '';
+                individualEntry.secondName = nameParts[1] || '';
+                individualEntry.thirdName = nameParts.slice(2).join(' ') || '';
+
+                if (nameMatch[2]) {
+                    individualEntry.aka = nameMatch[2].split(/\s*,\s*|\s+a\.k\.a\s+/i)
+                        .map(a => a.trim())
+                        .filter(a => a);
+                }
+            }
+
+            const dobMatch = content.match(/DOB:\s*(\d{2}[.-]\d{2}[.-]\d{4})/i);
+            if (dobMatch) {
+                individualEntry.dob = dobMatch[1].replace(/-/g, '.');
+            }
+
+            const nicMatch = content.match(/NIC:\s*([A-Z0-9]+)/i);
+            if (nicMatch) {
+                individualEntry.nic = nicMatch[1].toUpperCase();
+            }
+
+            individuals.push(individualEntry);
         }
-        return [];
     });
 
-    return namesWithSpaces;
+    return { individuals, entities };
 };
 
 module.exports = { extractTextFromPDF, processExtractedText };
