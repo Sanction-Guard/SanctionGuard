@@ -41,13 +41,13 @@ const processExtractedText = (text) => {
         // Check if the entry is an entity (starts with "EN")
         if (reference.startsWith("EN")) {
             // Extract Name, trimming at Address:, Other Information:, or Start Date:
-            const entityMatch = content.match(/Name:\s*([^\n]+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is);
+            const entityMatch = content.match(/Name:\s*([^\n]+?)(?=\s+(?:a.k.a)|$)/is);
             const addressMatch = content.match(/Address:\s*([\s\S]*?)(?=\nOther Information:|$)/is);
 
             if (entityMatch) {
                 const name = entityMatch[1].trim();
                 const aka = content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is)
-                    ? content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is)[1]
+                    ? content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:|Listed on:)|$)/is)[1]
                         .split(/\s*,\s*|\s+a\.k\.a\s+/i)
                         .map(a => a.trim())
                         .filter(a => a)
