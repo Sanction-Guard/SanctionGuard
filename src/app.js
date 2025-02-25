@@ -1,31 +1,111 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+// // // src/app.js
+// // import express from 'express';
+// // import cors from 'cors';
+// // import { APP_CONFIG } from './config/app.config.js';
+// // import apiRoutes from './routes/index.js';
+// // import { errorHandler, notFoundHandler } from './middleware/index.js';
+// // import logger from './utils/logger.js';
 
-// Import Routes
-const sanctionsRoute = require('./routes/sanctionsRoute');
+// // const app = express();
 
-const app = express();
+// // const createApp = () => {
+// //   const app = express();
+  
+// //   // Middleware
+// //   app.use(cors(APP_CONFIG.CORS_OPTIONS));
+// //   app.use(express.json());
+  
+// //   // Routes - Important: mount at /api prefix
+// //   app.use('/api', apiRoutes);
+  
+// //   // Basic root route for testing
+// //   app.get('/', (req, res) => {
+// //     res.json({ message: 'SanctionGuard API is running' });
+// //   });
+  
+// //   // Error handling
+// //   app.use(notFoundHandler);
+// //   app.use(errorHandler);
+  
+// //   return app;
+// // };
 
-const pdfRoute = require('./routes/pdfRoute');
+// // app.use(cors({
+// //     origin: '*',
+// //     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+// //     allowedHeaders: ['Content-Type', 'Authorization']
+// //   }));
+
+// // export default createApp;
 
 
-app.use('/api/pdf', pdfRoute);
+// // src/app.js - CRITICAL PART
+// import express from 'express';
+// import cors from 'cors';
+// import { searchController } from './controllers/search.controllers.js';
+// import { errorHandler, notFoundHandler } from './middleware/index.js';
+// import logger from './utils/logger.js';
 
-// Middleware
-app.use(express.json()); // Parse JSON request bodies
-app.use(cors());         // Enable CORS
+// const createApp = () => {
+//   const app = express();
+  
+//   // Middleware
+//   app.use(cors());
+//   app.use(express.json());
+  
+//   // Define routes directly in app.js for debugging
+//   app.post('/api/search', searchController.search);
+  
+//   // Add a test endpoint
+//   app.get('/test', (req, res) => {
+//     res.json({ message: 'Test endpoint is working!' });
+//   });
+  
+//   // Root endpoint
+//   app.get('/', (req, res) => {
+//     res.json({ message: 'SanctionGuard API is running. Use POST /api/search to search.' });
+//   });
+  
+//   // Error handling
+//   app.use(notFoundHandler);
+//   app.use(errorHandler);
+  
+//   return app;
+// };
 
-// Routes
-app.use('/api/sanctions', sanctionsRoute); // Integrate the example route
+// export default createApp;
 
-// Test Route
-app.get('/', (req, res) => {
-    res.send('Server is running');
-});
+import express from 'express';
+import cors from 'cors';
+import { searchController } from './controllers/search.controllers.js';
+import { errorHandler, notFoundHandler } from './middleware/index.js';
+import logger from './utils/logger.js';
 
-// Start the Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+const createApp = () => {
+  const app = express();
+  
+  // Middleware
+  app.use(cors());
+  app.use(express.json());
+  
+  // Define routes directly in app.js for debugging
+  app.post('/api/search', searchController.search);
+  
+  // Add a test endpoint
+  app.get('/test', (req, res) => {
+    res.json({ message: 'Test endpoint is working!' });
+  });
+  
+  // Root endpoint
+  app.get('/', (req, res) => {
+    res.json({ message: 'SanctionGuard API is running. Use POST /api/search to search.' });
+  });
+  
+  // Error handling
+  app.use(notFoundHandler);
+  app.use(errorHandler);
+  
+  return app;
+};
+
+export default createApp;
