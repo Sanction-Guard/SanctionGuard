@@ -19,3 +19,13 @@ export const connectDB = async () => {
         throw error;
     }
 };
+
+// DB_USERNAME=SanctionGuard
+// DB_PASSWORD=SanctionGuard
+// DB_CLUSTER=sanctioncluster.2myce.mongodb.net
+// DB_NAME=UNSanction
+
+// UN_SANCTIONS_URL=https://scsanctions.un.org/resources/xml/en/consolidated.xml
+
+// # Optional: Add any additional environment-specific variables
+// NODE_ENV=production

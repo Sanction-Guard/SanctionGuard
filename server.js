@@ -1,6 +1,6 @@
-import { connectDB } from './config/database.js';
-import { startScheduler } from './services/schedulerServices.js';
-import { logger } from './utils/logger.js';
+import { connectDB } from '../SanctionGuard/src/config/database.js';
+import { startScheduler } from '../SanctionGuard/src/services/schedulerServices.js';
+import { logger } from '../SanctionGuard/src/utils/logger.js';
 
 async function main() {
     try {

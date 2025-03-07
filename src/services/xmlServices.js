@@ -46,7 +46,7 @@ export const processIndividuals = async(result) => {
                 secondName: individual.SECOND_NAME || 'N/A',
                 thirdName: individual.THIRD_NAME || 'N/A',
                 unListType: individual.UN_LIST_TYPE || 'N/A',
-                referenceNumber: individual.REFERENCE_NUMBER || 'N/A',
+                referenceNumber: individual.REFERENCE_NUMBER,
                 title: extractValues(individual.TITLE),
                 nationality: extractValues(individual.NATIONALITY),
                 aliasNames: extractArrayField(individual.INDIVIDUAL_ALIAS, 'ALIAS_NAME'),
@@ -83,7 +83,7 @@ export const processEntities = async(result) => {
             const entityData = {
                 firstName: entity.FIRST_NAME || 'N/A',
                 unListType: entity.UN_LIST_TYPE || 'N/A',
-                referenceNumber: entity.REFERENCE_NUMBER || 'N/A',
+                referenceNumber: entity.REFERENCE_NUMBER,
                 aliasNames: extractArrayField(entity.ENTITY_ALIAS, 'ALIAS_NAME'),
                 addressStreet: extractArrayField(entity.ENTITY_ADDRESS, 'STREET'),
                 addressCity: extractArrayField(entity.ENTITY_ADDRESS, 'CITY'),

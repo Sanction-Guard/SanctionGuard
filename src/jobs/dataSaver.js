@@ -39,8 +39,8 @@ async function checkDatabaseAndResources() {
 async function findNewIndividuals(individualData) {
     try {
         const existing = await Individual.findOne({
-            // firstName: individualData.firstName,
-            // secondName: individualData.secondName,
+            firstName: individualData.firstName,
+            secondName: individualData.secondName,
             referenceNumber: individualData.referenceNumber,
             aliasNames: individualData.aliasNames,
             dobYear: individualData.dobYear,
