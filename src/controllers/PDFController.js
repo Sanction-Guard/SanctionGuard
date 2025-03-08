@@ -1,63 +1,38 @@
 const fs = require('fs');
-const { extractTextFromPDF, processExtractedText } = require('../utils/pdfExtractor');
-const Person = require('../models/Person');
-const Entity = require('../models/Entity');
+const pdfService = require('../services/pdfService');
 
 const uploadAndExtract = async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded or invalid file type.' });
+    }
+
+    const filePath = req.file.path;
+
     try {
-        if (!req.file) {
-            return res.status(400).json({ error: 'No file uploaded or invalid file type.' });
-        }
+        // Step 1: Extract and process PDF
+        const { individuals, entities } = await pdfService.extractAndProcessPDF(filePath);
 
-        const filePath = req.file.path;
-        let extractedText;
+        // Step 2: Save to database
+        const saveResult = await pdfService.saveToDatabase(individuals, entities);
 
-        try {
-            extractedText = await extractTextFromPDF(filePath);
-            console.log("🔍 Extracted Text:", extractedText); // Debugging Log
-        } catch (error) {
-            console.error('Error extracting text from PDF:', error.message);
-            return res.status(400).json({ error: 'The uploaded file is not a valid PDF.' });
-        }
+        // Step 3: Delete the file after processing
+        fs.unlinkSync(filePath);
 
-        const { individuals, entities } = processExtractedText(extractedText);
-
-        // Save to MongoDB
-        const individualBulkOps = individuals.map(entry => ({
-            updateOne: {
-                filter: { reference_number: entry.reference_number },
-                update: { $set: entry },
-                upsert: true
-            }
-        }));
-
-        const entityBulkOps = entities.map(entity => ({
-            updateOne: {
-                filter: { reference_number: entity.reference_number },
-                update: { $set: entity },
-                upsert: true
-            }
-        }));
-
-        const individualResult = await Person.bulkWrite(individualBulkOps);
-        const entityResult = await Entity.bulkWrite(entityBulkOps);
-
-        fs.unlinkSync(filePath); // Delete file after processing
-
+        // Step 4: Send response
         res.json({
             message: 'Data stored successfully',
             individuals: {
-                insertedCount: individualResult.upsertedCount || 0,
-                modifiedCount: individualResult.modifiedCount || 0
+                insertedCount: saveResult.individuals.insertedCount,
+                modifiedCount: saveResult.individuals.modifiedCount
             },
             entities: {
-                insertedCount: entityResult.upsertedCount || 0,
-                modifiedCount: entityResult.modifiedCount || 0
+                insertedCount: saveResult.entities.insertedCount,
+                modifiedCount: saveResult.entities.modifiedCount
             }
         });
     } catch (error) {
         console.error('Error processing PDF:', error.message);
-        if (req.file) fs.unlinkSync(req.file.path);
+        if (req.file) fs.unlinkSync(req.file.path); // Clean up file on error
         res.status(500).json({ error: 'Failed to process the PDF', details: error.message });
     }
 };
