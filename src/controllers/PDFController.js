@@ -1,5 +1,6 @@
-const fs = require('fs');
-const pdfService = require('../services/pdfService');
+// src/controllers/PDFController.js
+import fs from 'fs';
+import { extractAndProcessPDF, saveToDatabase } from '../services/pdfService.js';
 
 const uploadAndExtract = async (req, res) => {
     if (!req.file) {
@@ -10,10 +11,10 @@ const uploadAndExtract = async (req, res) => {
 
     try {
         // Step 1: Extract and process PDF
-        const { individuals, entities } = await pdfService.extractAndProcessPDF(filePath);
+        const { individuals, entities } = await extractAndProcessPDF(filePath);
 
         // Step 2: Save to database
-        const saveResult = await pdfService.saveToDatabase(individuals, entities);
+        const saveResult = await saveToDatabase(individuals, entities);
 
         // Step 3: Delete the file after processing
         fs.unlinkSync(filePath);
@@ -23,12 +24,12 @@ const uploadAndExtract = async (req, res) => {
             message: 'Data stored successfully',
             individuals: {
                 insertedCount: saveResult.individuals.insertedCount,
-                modifiedCount: saveResult.individuals.modifiedCount
+                modifiedCount: saveResult.individuals.modifiedCount,
             },
             entities: {
                 insertedCount: saveResult.entities.insertedCount,
-                modifiedCount: saveResult.entities.modifiedCount
-            }
+                modifiedCount: saveResult.entities.modifiedCount,
+            },
         });
     } catch (error) {
         console.error('Error processing PDF:', error.message);
@@ -37,4 +38,4 @@ const uploadAndExtract = async (req, res) => {
     }
 };
 
-module.exports = { uploadAndExtract };
+export { uploadAndExtract };

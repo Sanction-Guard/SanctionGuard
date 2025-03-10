@@ -1,10 +1,11 @@
-const express = require('express');
-const upload = require('../middlewares/fileValidation'); // Ensure this file exists
-const PDFController = require('../controllers/PDFController'); // Ensure this file exists
+// src/routes/pdfRoute.js
+import express from 'express';
+import { upload } from '../middlewares/fileValidation.js'; // Ensure this file exists
+import { uploadAndExtract } from '../controllers/PDFController.js'; // Ensure this file exists
 
 const router = express.Router();
 
 // ✅ Route for PDF Upload and Extraction
-router.post('/upload', upload.single('file'), PDFController.uploadAndExtract);
+router.post('/upload', upload.single('file'), uploadAndExtract);
 
-module.exports = router;
+export default router;
