@@ -7,16 +7,16 @@ import mongoose from 'mongoose';
 
 // Import routes
 import authRoutes from './routes/auth.js';
-import generalSettingsRoutes from './routes/generalSettings.js';
-import userManagementRoutes from './routes/userManagement.js';
-import notificationRoutes from './routes/notifications.js';
-import logsRoutes from './routes/logs.js';
+import generalSettingsRoutes from './routes/generalSettingsRoute.js';
+import userManagementRoutes from './routes/userRoute.js';
+import notificationRoutes from './routes/notificationRoute.js';
+import logsRoutes from './routes/logsRoute.js';
 
 // Load environment variables
 config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(helmet()); // Security headers
