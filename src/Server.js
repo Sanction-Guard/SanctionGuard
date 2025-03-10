@@ -6,10 +6,10 @@ import { config } from 'dotenv';
 import mongoose from 'mongoose';
 
 // Import routes
-import generalSettingsRoutes from './routes/generalSettings.js';
-import userManagementRoutes from './routes/userManagement.js';
-import notificationRoutes from './routes/notifications.js';
-import logsRoutes from './routes/logs.js';
+import generalSettingsRoutes from './routes/generalSettingsRoute.js';
+import userManagementRoutes from './routes/userRoute.js';
+import notificationRoutes from './routes/notificationRoute.js';
+import logsRoutes from './routes/logsRoute.js';
 
 // Load environment variables
 config();
