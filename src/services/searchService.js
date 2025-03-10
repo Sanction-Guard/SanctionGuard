@@ -46,28 +46,39 @@ exports.searchElasticsearch = async (searchTerm) => {
 // Fetch database status (total records & last updated time)
 exports.fetchDatabaseStatus = async () => {
     try {
-      // Fetch total record count
-      const countResult = await client.count({
-        index: process.env.ELASTICSEARCH_INDEX
-      });
-  
-      const totalRecords = countResult.body.count;
-  
-      // Fetch most recent document's created_at
-      const latestResult = await client.search({
-        index: process.env.ELASTICSEARCH_INDEX,
-        body: {
-          size: 1,
-          sort: [{ "created_at": { "order": "desc" } }],
-          _source: ["created_at"]
+        console.log("Fetching database status...");
+
+        // Fetch total record count
+        const countResult = await client.count({
+            index: process.env.ELASTICSEARCH_INDEX
+        });
+        console.log("Count result:", countResult);
+
+        if (!countResult || !countResult.body) {
+            throw new Error("Invalid count result from Elasticsearch");
         }
-      });
-  
-      const lastUpdated = latestResult.body.hits.hits[0]?._source?.created_at || 'N/A';
-  
-      return { totalRecords, lastUpdated };
+
+        // Fetch most recent document's created_at
+        const latestResult = await client.search({
+            index: process.env.ELASTICSEARCH_INDEX,
+            body: {
+                size: 1,
+                sort: [{ "created_at": { "order": "desc" } }],
+                _source: ["created_at"]
+            }
+        });
+        console.log("Latest result:", latestResult);
+
+        if (!latestResult || !latestResult.body) {
+            throw new Error("Invalid latest result from Elasticsearch");
+        }
+
+        const totalRecords = countResult.body.count;
+        const lastUpdated = latestResult.body.hits.hits[0]?._source?.created_at || 'N/A';
+
+        return { totalRecords, lastUpdated };
     } catch (err) {
-      console.error('Error fetching database status:', err);
-      return { totalRecords: 0, lastUpdated: 'Error' };
+        console.error('Error fetching database status:', err);
+        return { totalRecords: 0, lastUpdated: 'Error' };
     }
-  };
+};
