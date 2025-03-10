@@ -6,16 +6,17 @@ import { config } from 'dotenv';
 import mongoose from 'mongoose';
 
 // Import routes
-import generalSettingsRoutes from './routes/generalSettingsRoute.js';
-import userManagementRoutes from './routes/userRoute.js';
-import notificationRoutes from './routes/notificationRoute.js';
-import logsRoutes from './routes/logsRoute.js';
+import authRoutes from './routes/auth.js';
+import generalSettingsRoutes from './routes/generalSettings.js';
+import userManagementRoutes from './routes/userManagement.js';
+import notificationRoutes from './routes/notifications.js';
+import logsRoutes from './routes/logs.js';
 
 // Load environment variables
 config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(helmet()); // Security headers
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(morgan('dev')); // Logging
 
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/settings/general', generalSettingsRoutes);
 app.use('/api/settings/users', userManagementRoutes);
 app.use('/api/settings/notifications', notificationRoutes);
