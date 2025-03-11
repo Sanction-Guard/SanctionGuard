@@ -3,10 +3,11 @@ import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import { config } from 'dotenv';
+import dotenv from "dotenv";
 import mongoose from 'mongoose';
 
 // Import routes
-import authRoutes from './routes/auth.js';
+import authRoutes from './routes/authRoute.js';
 import generalSettingsRoutes from './routes/generalSettingsRoute.js';
 import userManagementRoutes from './routes/userRoute.js';
 import notificationRoutes from './routes/notificationRoute.js';
@@ -41,19 +42,23 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/sanctionguard')
-  .then(() => {
-    console.log('Connected to MongoDB');
-    // Start server
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  })
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1);
-  });
 
-// For testing purposes
-console.log('Sanction Guard Settings Backend initialized');
+
+dotenv.config(); // Load environment variables
+
+console.log("Loaded MONGO_URI:", process.env.MONGODB_URI); // Debugging line
+
+const mongoURI = process.env.MONGODB_URI;
+
+if (!mongoURI) {
+  console.error("❌ Error: MONGODB_URI is not defined in the .env file.");
+  process.exit(1);
+}
+
+mongoose
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ Connected to MongoDB successfully"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
