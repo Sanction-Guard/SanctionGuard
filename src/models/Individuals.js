@@ -1,17 +1,26 @@
 import mongoose from 'mongoose';
 
-const entitySchema = new mongoose.Schema({
+const individualSchema = new mongoose.Schema({
     firstName: { type: String, required: true, default: null },
+    secondName: { type: String, required: true, default: null },
+    thirdName: { type: String, required: true, default: null },
     unListType: { type: String, required: true, default: null },
-    referenceNumber: { type: String, required: true, default: null },
+    referenceNumber: { type: String, required: true },
+    title: { type: [String], default: [null] },
+    nationality: { type: [String], default: [null] },
     aliasNames: { type: [String], default: [null] },
-    addressStreet: { type: [String], default: [null] },
     addressCity: { type: [String], default: [null] },
-    addressCountry: { type: [String], default: [null] }
+    addressCountry: { type: [String], default: [null] },
+    dobYear: { type: [String], default: [null] },
+    birthCity: { type: [String], default: [null] },
+    birthCountry: { type: [String], default: [null] },
+    docType: { type: [String], default: [null] },
+    docNumber: { type: [String], default: [null] },
+    docIssueCountry: { type: [String], default: [null] }
 });
 
 // Pre-save middleware to transform N/A values to empty strings
-entitySchema.pre('save', function(next) {
+individualSchema.pre('save', function(next) {
     // Handle single string fields
     for (const path in this.schema.paths) {
         const schemaType = this.schema.paths[path];
@@ -30,4 +39,4 @@ entitySchema.pre('save', function(next) {
     next();
 });
 
-export default mongoose.model('Entity', entitySchema);
+export default mongoose.model('Individual', individualSchema);

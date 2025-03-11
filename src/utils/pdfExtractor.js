@@ -1,12 +1,13 @@
-const fs = require('fs');
-const pdfParse = require('pdf-parse');
+// src/utils/pdfExtractor.js
+import fs from 'fs';
+import pdfParse from 'pdf-parse';
 
 /**
  * Extracts text content from a PDF file.
  * @param {string} filePath - The path to the PDF file.
  * @returns {Promise<string>} - Extracted text from the PDF.
  */
-const extractTextFromPDF = async (filePath) => {
+export const extractTextFromPDF = async (filePath) => {
     try {
         const dataBuffer = fs.readFileSync(filePath);
         const data = await pdfParse(dataBuffer);
@@ -22,7 +23,7 @@ const extractTextFromPDF = async (filePath) => {
  * @param {string} text - Extracted text from the PDF.
  * @returns {Object} - Contains lists of individuals and entities.
  */
-const processExtractedText = (text) => {
+export const processExtractedText = (text) => {
     // Split text into individual entries using reference numbers
     const entryRegex = /(EN\/CA\/\d{4}\/\d{2,}|IN\/CA\/\d{4}\/\d{2,})([\s\S]*?)(?=EN\/CA\/\d{4}\/\d{2,}|IN\/CA\/\d{4}\/\d{2,}|$)/g;
     const entries = [];
@@ -30,7 +31,7 @@ const processExtractedText = (text) => {
     while ((match = entryRegex.exec(text)) !== null) {
         entries.push({
             reference: match[1],
-            content: match[2].trim()
+            content: match[2].trim(),
         });
     }
 
@@ -39,18 +40,18 @@ const processExtractedText = (text) => {
 
     entries.forEach(({ reference, content }) => {
         // Check if the entry is an entity (starts with "EN")
-        if (reference.startsWith("EN")) {
+        if (reference.startsWith('EN')) {
             // Extract Name, trimming at Address:, Other Information:, or Start Date:
-            const entityMatch = content.match(/Name:\s*([^\n]+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is);
+            const entityMatch = content.match(/Name:\s*([^\n]+?)(?=\s+(?:a\.k\.a)|$)/is);
             const addressMatch = content.match(/Address:\s*([\s\S]*?)(?=\nOther Information:|$)/is);
 
             if (entityMatch) {
                 const name = entityMatch[1].trim();
                 const aka = content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is)
-                    ? content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:)|$)/is)[1]
-                        .split(/\s*,\s*|\s+a\.k\.a\s+/i)
-                        .map(a => a.trim())
-                        .filter(a => a)
+                    ? content.match(/a\.k\.a\s+(.+?)(?=\s+(?:Address:|Other Information:|Start Date:|Listed on:)|$)/is)[1]
+                          .split(/\s*,\s*|\s+a\.k\.a\s+/i)
+                          .map((a) => a.trim())
+                          .filter((a) => a)
                     : [];
 
                 const addresses = [];
@@ -58,17 +59,17 @@ const processExtractedText = (text) => {
                     const addressText = addressMatch[1].trim();
                     // Split addresses by Roman numerals (i), (ii), (iii), etc.
                     const addressParts = addressText.split(/\s*\([xiv]+\)\s*/i);
-                    addresses.push(...addressParts.map(addr => addr.trim()).filter(addr => addr));
+                    addresses.push(...addressParts.map((addr) => addr.trim()).filter((addr) => addr));
                 }
 
                 entities.push({
                     reference_number: reference,
                     name: name,
                     aka: aka,
-                    addresses: addresses
+                    addresses: addresses,
                 });
             }
-        } else if (reference.startsWith("IN")) {
+        } else if (reference.startsWith('IN')) {
             // Process individuals
             const individualEntry = {
                 reference_number: reference,
@@ -77,7 +78,7 @@ const processExtractedText = (text) => {
                 thirdName: '',
                 aka: [],
                 dob: '',
-                nic: ''
+                nic: '',
             };
 
             const nameMatch = content.match(/Name:\s*((?:.(?!a\.k\.a))*?)(?:\s+a\.k\.a\s+(.+?))?(?=\s+Title:)/is);
@@ -88,9 +89,10 @@ const processExtractedText = (text) => {
                 individualEntry.thirdName = nameParts.slice(2).join(' ') || '';
 
                 if (nameMatch[2]) {
-                    individualEntry.aka = nameMatch[2].split(/\s*,\s*|\s+a\.k\.a\s+/i)
-                        .map(a => a.trim())
-                        .filter(a => a);
+                    individualEntry.aka = nameMatch[2]
+                        .split(/\s*,\s*|\s+a\.k\.a\s+/i)
+                        .map((a) => a.trim())
+                        .filter((a) => a);
                 }
             }
 
@@ -110,5 +112,3 @@ const processExtractedText = (text) => {
 
     return { individuals, entities };
 };
-
-module.exports = { extractTextFromPDF, processExtractedText };

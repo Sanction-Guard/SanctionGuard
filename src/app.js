@@ -1,31 +1,25 @@
 const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
-
-// Import Routes
-const sanctionsRoute = require('./routes/sanctionsRoute');
+const mongoose = require('mongoose');
+const pdfRoutes = require('./routes/pdfRoutes');
+const config = require('./config/db');
 
 const app = express();
 
-const pdfRoute = require('./routes/pdfRoute');
-
-
-app.use('/api/pdf', pdfRoute);
-
 // Middleware
-app.use(express.json()); // Parse JSON request bodies
-app.use(cors());         // Enable CORS
+app.use(express.json());
+
+// Database Connection
+mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.log(err));
 
 // Routes
-app.use('/api/sanctions', sanctionsRoute); // Integrate the example route
+app.use('/api/pdf', pdfRoutes);
 
-// Test Route
-app.get('/', (req, res) => {
-    res.send('Server is running');
+// Error Handling Middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Something went wrong!' });
 });
 
-// Start the Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+module.exports = app;
