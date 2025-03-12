@@ -1,24 +1,28 @@
-const { searchElasticsearch, fetchDatabaseStatus } = require('../services/searchService');
+const searchService = require('../services/searchService');
 
-exports.searchSanctions = async (req, res) => {
+const search = async (req, res) => {
+    const { searchTerm, searchType } = req.body;
+  
     try {
-        const { searchTerm } = req.body;
-        if (!searchTerm) {
-            return res.status(400).json({ error: 'Search term is required' });
-        }
-        const results = await searchElasticsearch(searchTerm);
-        res.json(results);
+      const results = await searchService.performSearch(searchTerm, searchType);
+      res.json(results);
     } catch (error) {
-        res.status(500).json({ error: 'Server error', details: error.message });
+      console.error('Error in search controller:', error);
+      res.status(500).json({ error: error.message || 'An error occurred during the search' });
     }
-};
+  };
+  
+  const getDatabaseStatus = async (req, res) => {
+    try {
+      const status = await searchService.getDatabaseStatus();
+      res.json(status);
+    } catch (error) {
+      console.error('Error in getDatabaseStatus controller:', error);
+      res.status(500).json({ error: error.message || 'An error occurred while fetching database status' });
+    }
+  };
 
-// Controller function to fetch database status
-exports.getDatabaseStatus = async (req, res) => {
-    try {
-        const status = await fetchDatabaseStatus();
-        res.json(status);
-    } catch (error) {
-        res.status(500).json({ error: 'Server error', details: error.message });
-    }
+module.exports = {
+  search,
+  getDatabaseStatus,
 };
