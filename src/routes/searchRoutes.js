@@ -1,8 +1,9 @@
 const express = require('express');
-const { searchSanctions, getDatabaseStatus } = require('../controllers/searchController');
+const searchController = require('../controllers/searchController');
+
 const router = express.Router();
 
-router.post('/search', searchSanctions);
-router.get('/database-status', getDatabaseStatus);
+router.post('/search', searchController.search);
+router.get('/status', searchController.getDatabaseStatus);
 
 module.exports = router;
