@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectDB } from './src/config/database.js';
+import { connectDBLocal } from './src/config/db.js';
 import { startScheduler } from './src/services/schedulerServices.js';
 import { logger } from './src/utils/logger.js';
 import dotenv from 'dotenv';
@@ -19,7 +20,8 @@ app.use(express.json());
 async function main() {
     try {
         // Connect to MongoDB
-        await connectDB();
+        //await connectDB();
+        await connectDBLocal();
 
         // Start the scheduler
         startScheduler();

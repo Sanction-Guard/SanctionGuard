@@ -1,7 +1,6 @@
-// src/models/EntityLocal.js
-import mongoose from 'mongoose';
+import { localMongoose } from '../config/db.js'; // Import the local Mongoose instance
 
-const entitySchema = new mongoose.Schema({
+const entitySchema = new localMongoose.Schema({
     reference_number: {
         type: String,
         required: true,
@@ -31,6 +30,6 @@ const entitySchema = new mongoose.Schema({
     },
 }, { collection: 'entities' }); // Explicitly set the collection name to 'entities'
 
-const EntityLocal = mongoose.model('EntityLocal', entitySchema);
+const EntityLocal = localMongoose.model('EntityLocal', entitySchema);
 
 export default EntityLocal;

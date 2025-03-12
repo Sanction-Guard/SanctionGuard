@@ -1,16 +1,17 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import 'dotenv/config';
 
-const connectDB = async () => {
+// Create a new Mongoose instance for the local connection
+const localMongoose = new mongoose.Mongoose();
+
+export const connectDBLocal = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        console.log('✅ MongoDB Connected Successfully');
+        await localMongoose.connect(process.env.MONGODB_URI);
+        console.log('✅ Local MongoDB Connected Successfully');
     } catch (error) {
-        console.error('❌ MongoDB Connection Error:', error.message);
+        console.error('❌ Local MongoDB Connection Error:', error.message);
     }
 };
 
-module.exports = connectDB;
+// Export the localMongoose instance
+export { localMongoose };
