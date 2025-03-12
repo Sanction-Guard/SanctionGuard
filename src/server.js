@@ -1,21 +1,17 @@
-require('dotenv').config();
-
+require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
-const dotenv = require('dotenv');
-const searchRoutes = require('./routes/searchRoutes');
 const cors = require('cors');
+const searchRoutes = require('./routes/searchRoutes');
+
 const app = express();
-
-app.use(cors({
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-  }));
-  
-app.use(express.json());
-app.use('/api', searchRoutes);
-
 const PORT = process.env.PORT || 3001;
-console.log("Elasticsearch URL:", process.env.ELASTICSEARCH_URL);
-console.log("Elasticsearch Index:", process.env.ELASTICSEARCH_INDEX);
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use('/api/search', searchRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
