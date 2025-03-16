@@ -1,9 +1,10 @@
-const express = require('express');
-const searchController = require('../controllers/searchController');
+import express from 'express'; // 👈 Use import
+import searchController from '../controllers/searchController.js'; // 👈 Use import
+import auditLogMiddleware from '../middlewares/auditLog.js'; // 👈 Use import
 
 const router = express.Router();
 
-router.post('/search', searchController.search);
+router.post('/search', auditLogMiddleware, searchController.search);
 router.get('/status', searchController.getDatabaseStatus);
 
-module.exports = router;
+export default router; // 👈 Use export
