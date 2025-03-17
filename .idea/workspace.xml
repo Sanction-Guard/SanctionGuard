@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b7fa239e-a4ff-4463-bf1f-d303a7c52d7d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/controllers/searchController.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/searchController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/middleware/errorHandler.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/searchRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/searchRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/searchService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/searchService.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,13 +65,14 @@
     "Node.js.pdfExtractor.js.executor": "Run",
     "Node.js.pdfRoute.js.executor": "Run",
     "Node.js.sanctionsRoute.js.executor": "Run",
+    "Node.js.searchController.js.executor": "Run",
     "Node.js.searchRoutes.js.executor": "Run",
     "Node.js.searchService.js.executor": "Run",
     "Node.js.server.cjs.executor": "Run",
     "Node.js.server.js.executor": "Run",
     "Node.js.server.mjs.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/elasticSearch",
+    "git-widget-placeholder": "feature/Auditlogging",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -155,6 +152,7 @@
       <workItem from="1742049507067" duration="7214000" />
       <workItem from="1742091444616" duration="16157000" />
       <workItem from="1742120502716" duration="3947000" />
+      <workItem from="1742176259346" duration="8710000" />
     </task>
     <servers />
   </component>

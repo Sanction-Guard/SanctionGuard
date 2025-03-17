@@ -42,4 +42,26 @@ const getDatabaseStatus = async (req, res) => {
     }
 };
 
-export default { search, getDatabaseStatus }; // 👈 Use export
+const getAuditLogs = async (req, res) => {
+    try {
+        const { userId, searchTerm, searchType, action } = req.query;
+
+        // Create a filter object based on provided query parameters
+        let filter = {};
+        if (userId) filter.userId = userId;
+        if (searchTerm) filter.searchTerm = { $regex: searchTerm, $options: "i" }; // Case-insensitive search
+        if (searchType) filter.searchType = searchType;
+        if (action) filter.action = action;
+
+        // Fetch filtered audit logs from the database
+        const auditLogs = await AuditLog.find(filter).sort({ createdAt: -1 });
+
+        res.json(auditLogs);
+    } catch (error) {
+        console.error("Error fetching audit logs:", error);
+        res.status(500).json({ error: error.message || "An error occurred while retrieving audit logs" });
+    }
+};
+
+
+export default { search, getDatabaseStatus, getAuditLogs };

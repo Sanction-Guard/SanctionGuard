@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import express from 'express';
 import cors from 'cors';
 import searchRoutes from './routes/searchRoutes.js';
+import auditRoutes from './routes/auditRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -21,6 +22,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Routes
 app.use('/api/search', searchRoutes);
+app.use('/api', auditRoutes);
 
 // Start server
 app.listen(PORT, () => {
