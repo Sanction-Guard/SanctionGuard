@@ -1,5 +1,5 @@
 // controllers/dataSourceController.js
-import { connections, getLocalModel, getUNModel, initializeConnections } from '../models/dbConnections.js';
+import { connections, getLocalModel, getUNModel, initializeConnections } from '../utils/dbConnections.js';
 
 let currentDataSource = 'Local';
 
