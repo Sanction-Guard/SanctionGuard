@@ -1,6 +1,5 @@
 import AuditLog from '../models/AuditLog.js';
 import mongoose from "mongoose";
-//import express from 'express';
 const auditLogMiddleware = async (req, res, next) => {
     try {
         const userId = req.user?.userId || new mongoose.Types.ObjectId();  // Assuming user info is stored in req.user
