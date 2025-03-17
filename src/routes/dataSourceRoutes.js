@@ -1,15 +1,16 @@
 // routes/dataSourceRoutes.js
-const express = require('express');
-const router = express.Router();
-const { 
+import express from 'express';
+import { 
   getDataSource, 
   setDataSource, 
   getData 
-} = require('../controllers/dataSourceController');
+} from '../controllers/dataSourceController.js';
+
+const router = express.Router();
 
 // Routes
 router.get('/data-source', getDataSource);
 router.post('/data-source', setDataSource);
 router.get('/data', getData);
 
-module.exports = router;
+export default router;

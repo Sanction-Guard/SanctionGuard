@@ -1,5 +1,5 @@
 // controllers/dataSourceController.js
-const { connections, getLocalModel, getUNModel, initializeConnections } = require('../models/dbConnections');
+import { connections, getLocalModel, getUNModel, initializeConnections } from '../models/dbConnections.js';
 
 let currentDataSource = 'Local';
 
@@ -92,7 +92,7 @@ const getData = async (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getDataSource,
   setDataSource,
   getData

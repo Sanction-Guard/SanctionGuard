@@ -1,5 +1,5 @@
 // models/dbConnections.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Database configuration
 const dbConfig = {
@@ -32,6 +32,10 @@ const unSchema = new mongoose.Schema({
   status: String,
   dateAdded: Date
 });
+
+// Function to get models for each database
+const getLocalModel = () => connections.local.model('LocalRecord', localSchema);
+const getUNModel = () => connections.un.model('UNRecord', unSchema);
 
 // Database connections
 const connections = {
@@ -89,9 +93,4 @@ mongoose.Connection.prototype.isConnected = function() {
   return this.readyState === 1;
 };
 
-module.exports = {
-  connections,
-  getLocalModel: () => connections.local.model('LocalRecord', localSchema),
-  getUNModel: () => connections.un.model('UNRecord', unSchema),
-  initializeConnections
-};
+export { connections, getLocalModel, getUNModel, initializeConnections };
