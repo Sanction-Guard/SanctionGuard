@@ -1,10 +1,20 @@
-import express from 'express'; // 👈 Use import
-import searchController from '../controllers/searchController.js'; // 👈 Use import
-import auditLogMiddleware from '../middlewares/auditLog.js'; // 👈 Use import
+import express from 'express';
+import { authenticate } from '../middlewares/authenticate.js';
+import { authorize } from '../middlewares/authorize.js'; 
+import searchController from '../controllers/searchController.js'; 
+import auditLogMiddleware from '../middlewares/auditLog.js'; 
 
 const router = express.Router();
 
-router.post('/search', auditLogMiddleware, searchController.search);
+// Protect the /search route with authentication and role-based authorization
+router.post(
+    '/search',
+    authenticate, // Verify the user is logged in
+    authorize(['operator', 'manager', 'admin']), // Allow only operator, manager, and admin
+    auditLogMiddleware, // Log the activity
+    searchController.search // Handle the search logic
+  );
+  
 router.get('/status', searchController.getDatabaseStatus);
 
-export default router; // 👈 Use export
+export default router; 
