@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import { User } from '../config/userDB.js'; // Updated import
 import bcrypt from 'bcryptjs';
 
 export const login = async (email, password) => {
@@ -7,7 +7,7 @@ export const login = async (email, password) => {
     if (!user) {
         throw new Error('User not found');
     }
-
+    console.log('User found:', user); // Debug log
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
         throw new Error('Invalid credentials');
