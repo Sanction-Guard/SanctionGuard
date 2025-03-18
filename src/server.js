@@ -1,16 +1,17 @@
-require('dotenv').config();
+require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
-const path = require('path');
-const connectDB = require('./config/db');
+const cors = require('cors');
+const searchRoutes = require('./routes/searchRoutes');
 
 const app = express();
+const PORT = process.env.PORT || 3001;
+
+app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
-connectDB();
+// Routes
+app.use('/api/search', searchRoutes);
 
-// Routes (Fixed path issue)
-app.use('/api/pdf', require(path.join(__dirname, 'routes/pdfRoute')));
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
