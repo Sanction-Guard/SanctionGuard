@@ -5,43 +5,43 @@ import mongoose from 'mongoose';
 const dbConfig = {
   local: {
     uri: process.env.LOCAL_MONGODB_URI,
-    options: {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    }
+    options: {}
   },
   un: {
     uri: process.env.UN_MONGODB_URI,
-    options: {
-    //   useNewUrlParser: true,
-    //   useUnifiedTopology: true,
-    }
+    options: {}
   }
 };
 
 // Schemas
-const localSchema = new mongoose.Schema({
-  userId: String,
-  data: String,
-  timestamp: Date
-});
-
-const unSchema = new mongoose.Schema({
-  recordId: String,
+const entitySchema = new mongoose.Schema({
+  // Example fields - replace with your actual schema
+  entityId: String,
   name: String,
   status: String,
   dateAdded: Date
-});
+}, { collection: 'entities' }); // Explicitly use 'entities' collection
 
-// Function to get models for each database
-const getLocalModel = () => connections.local.model('LocalRecord', localSchema);
-const getUNModel = () => connections.un.model('UNRecord', unSchema);
+const individualSchema = new mongoose.Schema({
+  // Example fields - replace with your actual schema
+  individualId: String,
+  name: String,
+  status: String,
+  dateAdded: Date
+}, { collection: 'individuals' }); // Explicitly use 'individuals' collection
+
 
 // Database connections
 const connections = {
   local: null,
   un: null
 };
+
+// Predefined models
+let localEntitiesModel;
+let localIndividualsModel;
+let unEntitiesModel;
+let unIndividualsModel;
 
 // Function to create connection
 const createConnection = async (dbName) => {
@@ -74,9 +74,13 @@ const initializeConnections = async () => {
     connections.local = await createConnection('local');
     connections.un = await createConnection('un');
     
-    // Define models
-    connections.local.model('LocalRecord', localSchema);
-    connections.un.model('UNRecord', unSchema);
+    // Define models for LocalSanction
+    localEntitiesModel = connections.local.model('LocalEntities', entitySchema);
+    localIndividualsModel = connections.local.model('LocalIndividuals', individualSchema);
+    
+    // Define models for UNSanction
+    unEntitiesModel = connections.un.model('UNEntities', entitySchema);
+    unIndividualsModel = connections.un.model('UNIndividuals', individualSchema);
     
     return true;
   } catch (error) {
@@ -93,4 +97,17 @@ mongoose.Connection.prototype.isConnected = function() {
   return this.readyState === 1;
 };
 
-export { connections, getLocalModel, getUNModel, initializeConnections };
+// Functions to get the pre-defined models
+const getLocalEntitiesModel = () => localEntitiesModel;
+const getLocalIndividualsModel = () => localIndividualsModel;
+const getUNEntitiesModel = () => unEntitiesModel;
+const getUNIndividualsModel = () => unIndividualsModel;
+
+export { 
+  connections, 
+  getLocalEntitiesModel, 
+  getLocalIndividualsModel, 
+  getUNEntitiesModel, 
+  getUNIndividualsModel, 
+  initializeConnections 
+};

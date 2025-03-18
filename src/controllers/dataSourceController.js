@@ -1,5 +1,12 @@
 // controllers/dataSourceController.js
-import { connections, getLocalModel, getUNModel, initializeConnections } from '../utils/dbConnections.js';
+import { 
+  connections, 
+  getLocalEntitiesModel, 
+  getLocalIndividualsModel, 
+  getUNEntitiesModel, 
+  getUNIndividualsModel, 
+  initializeConnections 
+} from '../utils/dbConnections.js';
 
 let currentDataSource = 'Local';
 
@@ -59,21 +66,31 @@ const getData = async (req, res) => {
 
     switch (currentDataSource) {
       case 'Local':
-        const LocalRecord = getLocalModel();
-        results.local = await LocalRecord.find().limit(10);
+        const LocalEntities = getLocalEntitiesModel();
+        const LocalIndividuals = getLocalIndividualsModel();
+        results.entities = await LocalEntities.find().limit(10);
+        results.individuals = await LocalIndividuals.find().limit(10);
         break;
       
       case 'UN':
-        const UNRecord = getUNModel();
-        results.un = await UNRecord.find().limit(10);
+        const UNEntities = getUNEntitiesModel();
+        const UNIndividuals = getUNIndividualsModel();
+        results.entities = await UNEntities.find().limit(10);
+        results.individuals = await UNIndividuals.find().limit(10);
         break;
       
       case 'Both':
-        const LocalModel = getLocalModel();
-        const UNModel = getUNModel();
-        results = {
-          local: await LocalModel.find().limit(10),
-          un: await UNModel.find().limit(10)
+        const LocalEnt = getLocalEntitiesModel();
+        const LocalInd = getLocalIndividualsModel();
+        const UNEnt = getUNEntitiesModel();
+        const UNInd = getUNIndividualsModel();
+        results.local = {
+          entities: await LocalEnt.find().limit(10),
+          individuals: await LocalInd.find().limit(10)
+        };
+        results.un = {
+          entities: await UNEnt.find().limit(10),
+          individuals: await UNInd.find().limit(10)
         };
         break;
     }
