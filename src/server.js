@@ -1,8 +1,12 @@
 import mongoose from 'mongoose';
 import express from 'express';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import searchRoutes from './routes/searchRoutes.js';
 import auditRoutes from './routes/auditRoutes.js';
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -24,7 +28,13 @@ mongoose.connect(process.env.MONGODB_URI_NEW, {
 app.use('/api/search', searchRoutes);
 app.use('/api', auditRoutes);
 
+// Add a health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is running' });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Similarity threshold set to ${process.env.SIMILARITY_THRESHOLD || '70'}%`);
 });

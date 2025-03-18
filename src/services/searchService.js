@@ -1,6 +1,6 @@
-import stringSimilarity from 'string-similarity'; // 👈 Use import
-import { Client } from '@elastic/elasticsearch'; // 👈 Use import
-import dotenv from 'dotenv'; // 👈 Use import
+import stringSimilarity from 'string-similarity';
+import { Client } from '@elastic/elasticsearch';
+import dotenv from 'dotenv';
 
 // Load environment variables
 dotenv.config();
@@ -15,6 +15,44 @@ const client = new Client({
 });
 
 const ELASTICSEARCH_INDEX = process.env.ELASTICSEARCH_INDEX;
+
+const calculateAverageSimilarity = (searchTerm, dbName) => {
+  const searchParts = searchTerm.toLowerCase().trim().split(/\s+/); // Split search term into words
+  const dbParts = dbName.toLowerCase().trim().split(/\s+/); // Split database name into words
+
+  // Calculate the similarity of each search part against all db parts
+  const searchPartScores = searchParts.map(searchPart => {
+    const similarities = dbParts.map(dbPart =>
+        stringSimilarity.compareTwoStrings(searchPart, dbPart)
+    );
+    // Get the highest similarity for this search part
+    return Math.max(...similarities, 0);
+  });
+
+  // Calculate the similarity of each db part against all search parts
+  const dbPartScores = dbParts.map(dbPart => {
+    const similarities = searchParts.map(searchPart =>
+        stringSimilarity.compareTwoStrings(dbPart, searchPart)
+    );
+    // Get the highest similarity for this db part
+    return Math.max(...similarities, 0);
+  });
+
+  // Calculate the average score for search parts
+  const searchPartsAvg = searchPartScores.length > 0
+      ? searchPartScores.reduce((sum, score) => sum + score, 0) / searchPartScores.length
+      : 0;
+
+  // Calculate the average score for db parts
+  const dbPartsAvg = dbPartScores.length > 0
+      ? dbPartScores.reduce((sum, score) => sum + score, 0) / dbPartScores.length
+      : 0;
+
+  // Return the highest average as the final similarity score
+  const highestAvg = Math.max(searchPartsAvg, dbPartsAvg);
+
+  return (highestAvg * 100).toFixed(2); // Convert to percentage
+};
 
 const performSearch = async (searchTerm, searchType) => {
   try {
@@ -44,14 +82,14 @@ const performSearch = async (searchTerm, searchType) => {
 
     const formattedResults = hits.map((hit) => {
       const dbName = `${hit._source.firstName || ''} ${hit._source.secondName || ''} ${hit._source.thirdName || ''}`.trim();
-      const similarity = stringSimilarity.compareTwoStrings(searchTerm.toLowerCase(), dbName.toLowerCase());
+      const similarityPercentage = calculateAverageSimilarity(searchTerm, dbName);
 
       return {
         referenceNumber: hit._source.referenceNumber || '-',
         fullName: dbName,
         dateOfBirth: hit._source.dateOfBirth || '-',
         nicNumber: hit._source.nicNumber || '-',
-        similarityPercentage: (similarity * 100).toFixed(2),
+        similarityPercentage,
         ...hit._source,
       };
     });
@@ -115,4 +153,4 @@ const getDatabaseStatus = async () => {
 };
 
 // Export functions
-export default { performSearch, getDatabaseStatus }; // 👈 Use export
+export default { performSearch, getDatabaseStatus };
