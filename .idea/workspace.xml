@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b7fa239e-a4ff-4463-bf1f-d303a7c52d7d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/searchService.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/searchService.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="SearchingProcess" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;PamaliRodrigo&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Kiza-1015/SanctionGuard.git&quot;,
+    &quot;accountId&quot;: &quot;1b3ffcb7-5c5b-4586-82d1-7eedfc9abaf0&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2qHxdb9ZC6Tu4TJk91nAgH1INb9" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Node.js.AuditLog.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.Entities.mjs.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.app.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.auditLog.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.dataAccess.mjs.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.db.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.pdfExtractor.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.pdfRoute.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.sanctionsRoute.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.searchController.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.searchRoutes.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.searchService.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.server.cjs.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.server.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.server.mjs.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/Auditlogging&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\IntelliJ IDEA 2024.2.4\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Projects\SanctionGuard" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.24807.4" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.24807.4" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b7fa239e-a4ff-4463-bf1f-d303a7c52d7d" name="Changes" comment="" />
+      <created>1734333392289</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1734333392289</updated>
+      <workItem from="1734333393174" duration="5624000" />
+      <workItem from="1734349726409" duration="61000" />
+      <workItem from="1734353599643" duration="821000" />
+      <workItem from="1734415600534" duration="1352000" />
+      <workItem from="1735640246774" duration="616000" />
+      <workItem from="1737454479636" duration="7794000" />
+      <workItem from="1737473215892" duration="3565000" />
+      <workItem from="1737909726234" duration="11000" />
+      <workItem from="1738081628534" duration="50000" />
+      <workItem from="1738129249858" duration="48000" />
+      <workItem from="1738129310855" duration="39000" />
+      <workItem from="1738221478970" duration="2881000" />
+      <workItem from="1738247856823" duration="6593000" />
+      <workItem from="1738291737903" duration="320000" />
+      <workItem from="1738428608048" duration="6430000" />
+      <workItem from="1738504177767" duration="7394000" />
+      <workItem from="1738556294086" duration="4227000" />
+      <workItem from="1738564382007" duration="2487000" />
+      <workItem from="1738573716285" duration="5106000" />
+      <workItem from="1738592680782" duration="6339000" />
+      <workItem from="1738607091581" duration="3244000" />
+      <workItem from="1738611311533" duration="486000" />
+      <workItem from="1738632345274" duration="3303000" />
+      <workItem from="1738642758291" duration="13568000" />
+      <workItem from="1738665241754" duration="3254000" />
+      <workItem from="1738677589342" duration="2113000" />
+      <workItem from="1738723190732" duration="693000" />
+      <workItem from="1738724064614" duration="2831000" />
+      <workItem from="1738822829607" duration="3913000" />
+      <workItem from="1739008408876" duration="1859000" />
+      <workItem from="1739020455918" duration="9010000" />
+      <workItem from="1740416387575" duration="1379000" />
+      <workItem from="1740454858258" duration="1982000" />
+      <workItem from="1740620869022" duration="8674000" />
+      <workItem from="1740730245865" duration="3942000" />
+      <workItem from="1740800878498" duration="7158000" />
+      <workItem from="1740851520250" duration="696000" />
+      <workItem from="1740853023123" duration="1327000" />
+      <workItem from="1740898027280" duration="2381000" />
+      <workItem from="1740901619255" duration="5203000" />
+      <workItem from="1741080537150" duration="615000" />
+      <workItem from="1741580345309" duration="22000" />
+      <workItem from="1741585941824" duration="4000" />
+      <workItem from="1741665169174" duration="248000" />
+      <workItem from="1742027264530" duration="10606000" />
+      <workItem from="1742049507067" duration="7214000" />
+      <workItem from="1742091444616" duration="16157000" />
+      <workItem from="1742120502716" duration="3947000" />
+      <workItem from="1742176259346" duration="8710000" />
+      <workItem from="1742212074905" duration="717000" />
+      <workItem from="1742222803147" duration="3098000" />
+      <workItem from="1742228586440" duration="2091000" />
+      <workItem from="1742266067968" duration="2769000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
