@@ -246,7 +246,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
+<<<<<<< HEAD
 For support, email support@sanctionguard2024@gmail.com or open an issue on GitHub.
+=======
+For support, email support@sanctionguard.com or open an issue on GitHub.
+>>>>>>> bb2bf35f1c15cf4eadaaf6c3fc6f90249c2ae991
 
 ## Acknowledgements
 

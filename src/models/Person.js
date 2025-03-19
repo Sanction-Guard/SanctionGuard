@@ -1,7 +1,6 @@
-// src/models/Person.js
-import mongoose from 'mongoose';
+import { localMongoose } from '../config/db.js'; // Import the local Mongoose instance
 
-const personSchema = new mongoose.Schema({
+const personSchema = new localMongoose.Schema({
     reference_number: {
         type: String,
         required: true,
@@ -44,6 +43,6 @@ const personSchema = new mongoose.Schema({
     },
 }, { collection: 'individuals' }); // Explicitly set the collection name to 'individuals'
 
-const Person = mongoose.model('Person', personSchema);
+const Person = localMongoose.model('Person', personSchema);
 
 export default Person;
