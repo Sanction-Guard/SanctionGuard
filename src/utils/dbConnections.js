@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 // Database configuration
 const dbConfig = {
   local: {
-    uri: process.env.LOCAL_MONGODB_URI,
+    uri: process.env.MONGODB_URI_local,
     options: {}
   },
   un: {
@@ -61,6 +61,12 @@ const createConnection = async (dbName) => {
         console.log(`Disconnected from ${dbName} database`);
       });
       
+      // Wait for the connection to be fully established
+      await new Promise((resolve) => {
+        if (connection.readyState === 1) resolve();
+        else connection.once('connected', resolve);
+      });
+      
       return connection;
     } catch (error) {
       console.error(`Failed to connect to ${dbName} database:`, error);
@@ -90,7 +96,7 @@ const initializeConnections = async () => {
 };
 
 // Initialize on module load
-initializeConnections();
+//initializeConnections();
 
 // Connection state checker
 mongoose.Connection.prototype.isConnected = function() {
