@@ -4,7 +4,7 @@ import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { connectDB } from './src/config/database.js';
 import { connectDBLocal } from './src/config/db.js';
-import mongoose from 'mongoose';
+import { connectDBuser } from './src/config/dataB.js';
 import { startScheduler } from './src/services/schedulerServices.js';
 import { logger } from './src/utils/logger.js';
 import searchRoutes from './src/routes/searchRoutes.js'; // 👈 Use import
@@ -27,6 +27,7 @@ async function main() {
         // Connect to MongoDB
         await connectDB();
         await connectDBLocal();
+        await connectDBuser();
 
         // Start the scheduler
         startScheduler();

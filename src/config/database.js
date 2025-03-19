@@ -13,7 +13,7 @@ export const MONGO_URI = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@${DB_CLUST
 export const connectDB = async () => {
     try {
         await mongoose.connect(MONGO_URI);
-        console.log('✅ Connected to MongoDB Atlas successfully');
+        console.log('✅ Connected to  UN MongoDB Atlas successfully');
     } catch (error) {
         console.error('❌ MongoDB Atlas Connection Error:', error.message);
         throw error;

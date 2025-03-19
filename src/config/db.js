@@ -6,7 +6,7 @@ const localMongoose = new mongoose.Mongoose();
 
 export const connectDBLocal = async () => {
     try {
-        await localMongoose.connect(process.env.MONGODB_URI);
+        await localMongoose.connect(process.env.MONGODB_URI_local);
         console.log('✅ Local MongoDB Connected Successfully');
     } catch (error) {
         console.error('❌ Local MongoDB Connection Error:', error.message);
