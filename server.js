@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 import { startScheduler } from './src/services/schedulerServices.js';
 import { logger } from './src/utils/logger.js';
 import searchRoutes from './src/routes/searchRoutes.js'; // 👈 Use import
-import AuditLog from './src/models/AuditLog.js'; // 👈 Use import
+import auditRoutes from './src/routes/auditRoutes.js'; // 👈 Use import
 import dotenv from 'dotenv';
 
 // Load environment variables
@@ -25,7 +25,7 @@ app.use(cors());
 async function main() {
     try {
         // Connect to MongoDB
-        //await connectDB();
+        await connectDB();
         await connectDBLocal();
 
         // Start the scheduler
@@ -37,6 +37,7 @@ async function main() {
 
         
         app.use('/api/search', searchRoutes);
+        app.use('/api', auditRoutes);
 
         // Start the Express server
         const PORT = process.env.PORT || 3001;
