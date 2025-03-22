@@ -3,12 +3,14 @@ import path from 'path';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { connectDB } from './src/config/database.js';
+import { userDB } from './src/config/userDB.js';
 import { connectDBLocal } from './src/config/db.js';
 import { connectDBuser } from './src/config/dataB.js';
 import { startScheduler } from './src/services/schedulerServices.js';
 import { logger } from './src/utils/logger.js';
 import searchRoutes from './src/routes/searchRoutes.js'; // 👈 Use import
 import auditRoutes from './src/routes/auditRoutes.js'; // 👈 Use import
+import authRoutes from './src/routes/authRoutes.js';
 import dotenv from 'dotenv';
 import dataSourceRoutes from './src/routes/dataSourceRoutes.js'; // From settings page
 import { 
@@ -56,6 +58,12 @@ async function main() {
             throw new Error('Failed to connect to LocalSanction or UNSanction databases');
         }
 
+        // NEW: Wait for userDB connection if not already established
+        if (userDB.readyState !== 1) {
+          await new Promise((resolve) => userDB.once('open', resolve));
+        }
+        console.log('User database connection established');
+
         // Start the scheduler
         startScheduler();
 
@@ -67,6 +75,7 @@ async function main() {
         app.use('/api/search', searchRoutes);
         app.use('/api', auditRoutes);
         app.use('/api/settings', dataSourceRoutes); // Settings functionality
+        app.use('/api/auth', authRoutes);
 
         // Start the Express server
         const PORT = process.env.PORT || 3001;
