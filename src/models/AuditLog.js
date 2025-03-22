@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
+import { userMongoose } from '../config/dataB.js'; // Import the local Mongoose instance
 
-const auditLogSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+const auditLogSchema = new userMongoose.Schema({
+    userId: { type: userMongoose.Schema.Types.ObjectId, ref: 'User' },
     action: { type: String, required: true },
     searchTerm: { type: String, required: true },
     searchType: { type: String, required: true },
@@ -9,6 +9,6 @@ const auditLogSchema = new mongoose.Schema({
     timestamp: { type: Date, default: Date.now },
 }, { collection: 'systemlogs' });
 
-const AuditLog = mongoose.model('AuditLog', auditLogSchema);
+const AuditLog = userMongoose.model('AuditLog', auditLogSchema);
 
 export default AuditLog; // 👈 Use export

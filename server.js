@@ -43,7 +43,7 @@ app.use((err, req, res, next) => {
 async function main() {
     try {
         // Connect to MongoDB
-        await connectDB();
+    
         await connectDBLocal();
         await connectDBuser();
         await initializeConnections(); // Settings page DBs (LocalSanction, UNSanction)
