@@ -1,0 +1,40 @@
+# MongoDB Main Connections
+MONGODB_URI=mongodb+srv://SanctionGuard:SanctionGuard@sanctioncluster.2myce.mongodb.net/UserDetails?retryWrites=true&w=majority&appName=SanctionCluster
+MONGODB_URI_local=mongodb+srv://SanctionGuard:SanctionGuard@sanctioncluster.2myce.mongodb.net/LocalSanction?retryWrites=true&w=majority&appName=SanctionCluster
+UN_MONGODB_URI=mongodb+srv://SanctionGuard:SanctionGuard@sanctioncluster.2myce.mongodb.net/UNSanction?retryWrites=true&w=majority&appName=SanctionCluster
+USER_MONGODB_URI=mongodb+srv://SanctionGuard:SanctionGuard@sanctioncluster.2myce.mongodb.net/UserDetails?retryWrites=true&w=majority&appName=SanctionCluster
+
+# BlockList Database Connections (both variants for compatibility)
+MONGODB_URI_BLOCKLIST=mongodb+srv://SanctionGuard:SanctionGuard@sanctioncluster.2myce.mongodb.net/BlockList?retryWrites=true&w=majority&appName=SanctionCluster
+BLOCKLIST_DB_URI=mongodb+srv://SanctionGuard:SanctionGuard@sanctioncluster.2myce.mongodb.net/BlockList?retryWrites=true&w=majority&appName=SanctionCluster
+BLOCKLIST_MONGODB_URI=mongodb+srv://SanctionGuard:SanctionGuard@sanctioncluster.2myce.mongodb.net/BlockList?retryWrites=true&w=majority&appName=SanctionCluster
+
+# Legacy/Alternative Connection String
+MONGODB_URI_NEW=mongodb+srv://SanctionGuard:SanctionGuard@sanctioncluster.2myce.mongodb.net/UserDetails?retryWrites=true&w=majority&appName=SanctionCluster
+
+# MongoDB Credentials (for reference)
+LOCAL_DB_USERNAME=SanctionGuard
+LOCAL_DB_PASSWORD=SanctionGuard
+LOCAL_DB_CLUSTER=sanctioncluster.2myce.mongodb.net
+LOCAL_DB_NAME=LocalSanction
+
+UN_DB_USERNAME=SanctionGuard
+UN_DB_PASSWORD=SanctionGuard
+UN_DB_CLUSTER=sanctioncluster.2myce.mongodb.net
+UN_DB_NAME=UNSanction
+
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+
+# Authentication
+JWT_SECRET=342a993fdccd30a9d3d3bd7b0d9ea2f0113a2c0bdd4f24879276e9498500e3d6
+
+# Elasticsearch Configuration
+ELASTICSEARCH_URL=http://34.238.157.184:9200
+ELASTICSEARCH_INDEX=sanction_names
+ELASTICSEARCH_USERNAME=elastic
+ELASTICSEARCH_PASSWORD=m8m3g9dZ1LsA2cTUpcd1
+
+# External Services
+UN_SANCTIONS_URL=https://scsanctions.un.org/resources/xml/en/consolidated.xml
