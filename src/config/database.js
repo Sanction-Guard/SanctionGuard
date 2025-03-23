@@ -13,19 +13,9 @@ export const MONGO_URI = `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@${DB_CLUST
 export const connectDB = async () => {
     try {
         await mongoose.connect(MONGO_URI);
-        console.log('Connected to MongoDB Atlas successfully');
+        console.log('✅ Connected to  UN MongoDB Atlas successfully');
     } catch (error) {
-        console.error('MongoDB connection error:', error.message);
+        console.error('❌ MongoDB Atlas Connection Error:', error.message);
         throw error;
     }
 };
-
-// DB_USERNAME=SanctionGuard
-// DB_PASSWORD=SanctionGuard
-// DB_CLUSTER=sanctioncluster.2myce.mongodb.net
-// DB_NAME=UNSanction
-
-// UN_SANCTIONS_URL=https://scsanctions.un.org/resources/xml/en/consolidated.xml
-
-// # Optional: Add any additional environment-specific variables
-// NODE_ENV=production

@@ -1,6 +1,6 @@
 // src/controllers/PDFController.js
 import fs from 'fs';
-import { extractAndProcessPDF, saveToDatabase } from '../services/pdfService.js';
+import { extractAndProcessPDF, saveToDatabase } from '../services/PDFService.js';
 
 const uploadAndExtract = async (req, res) => {
     if (!req.file) {

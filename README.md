@@ -194,7 +194,7 @@ docker-compose up -d elasticsearch
 npm run setup:elasticsearch
 
 # Configure MongoDB Atlas connection in .env file
-# MONGODB_URI=mongodb+srv://username:password@cluster0.example.mongodb.net/sanctionguard?retryWrites=true&w=majority
+# MONGODB_URI_NEW=mongodb+srv://username:password@cluster0.example.mongodb.net/sanctionguard?retryWrites=true&w=majority
 
 # Run database migrations
 npm run migrate
@@ -246,7 +246,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For support, email support@sanctionguard2024@gmail.com or open an issue on GitHub.
+For support, email support@sanctionguard.com or open an issue on GitHub.
 
 ## Acknowledgements
 
