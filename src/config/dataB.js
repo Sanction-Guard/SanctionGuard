@@ -12,5 +12,5 @@ export const connectDBuser = async () => {
     }
 };
 
-// Export the localMongoose instance
+// Export the localMongoose
 export { userMongoose };
