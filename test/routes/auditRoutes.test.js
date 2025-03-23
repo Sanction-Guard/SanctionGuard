@@ -1,9 +1,7 @@
+// Import Jest globals first
 import { jest } from '@jest/globals';
-import express from 'express';
-import searchController from '../../src/controllers/searchController.js';
-import routesModule from '../../src/routes/auditRoutes.js';
 
-// Mock dependencies
+// Set up mocks before any imports of the modules we want to mock
 jest.mock('express', () => {
   const mockRouter = {
     get: jest.fn()
@@ -16,6 +14,11 @@ jest.mock('express', () => {
 jest.mock('../../src/controllers/searchController.js', () => ({
   getAuditLogs: 'getAuditLogsFunction'
 }));
+
+/* Now import the modules after mocking */
+import express from 'express';
+import searchController from '../../src/controllers/searchController.js';
+import routesModule from '../../src/routes/auditRoutes.js';
 
 describe('Audit Routes', () => {
   let router;

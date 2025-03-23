@@ -1,2 +1,2 @@
 // // This file can help with ESM-related setup
-// import { jest } from '@jest/globals';
+ import { jest } from '@jest/globals';

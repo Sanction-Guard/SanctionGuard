@@ -11,6 +11,7 @@ import auditRoutes from './src/routes/auditRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
 import dataSourceRoutes from './src/routes/dataSourceRoutes.js';
 import { userDB } from './src/config/userDB.js';
+import {router} from '.src/route/pdfRoute'
 
 // Mock all the dependencies
 jest.mock('express', () => {
@@ -59,7 +60,7 @@ jest.mock(authRoutes, () => 'authRoutes');
 jest.mock(dataSourceRoutes, () => 'dataSourceRoutes');
 
 // Mock dynamic import
-jest.mock('./src/routes/pdfRoute.js', () => ({ default: 'pdfRoute' }), { virtual: true });
+jest.mock(router, () => ({ default: 'pdfRoute' }), { virtual: true });
 global.console = { log: jest.fn(), error: jest.fn() };
 
 // Backup and restore process.exit

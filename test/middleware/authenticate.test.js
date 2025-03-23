@@ -5,7 +5,7 @@ import { User } from '../../src/config/userDB.js';
 
 // Mock dependencies
 jest.mock('jsonwebtoken');
-jest.mock('../../src/config/userDB.js');
+jest.mock(User);
 
 describe('Authentication Middleware', () => {
   let mockRequest;
