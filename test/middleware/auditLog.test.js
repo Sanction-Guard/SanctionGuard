@@ -5,7 +5,7 @@ import AuditLog from '../../src/models/AuditLog.js';
 
 // Mock dependencies
 jest.mock('../../src/models/AuditLog.js');
-jest.mock('mongoose');
+jest.mock(mongoose);
 
 describe('Audit Log Middleware', () => {
   let mockRequest;

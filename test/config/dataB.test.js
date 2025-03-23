@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import mongoose from 'mongoose';
-import { connectDBuser, userMongoose } from '../../src/config/dataB.js';
+import { connectDBuser } from '../../src/config/dataB.js'; // Ensure this is an ES module export
 
 // Mock mongoose
 jest.mock('mongoose', () => {

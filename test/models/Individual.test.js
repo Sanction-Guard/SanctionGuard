@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import mongoose from 'mongoose';
 
 // Mock the Individual module first
-jest.mock('../../src/models/Individual.js', () => {
+jest.mock('../../src/models/Individuals.js', () => {
   // Return a mock implementation of the Individual model
   return {
     default: 'mocked-individual-model'

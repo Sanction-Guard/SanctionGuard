@@ -3,7 +3,7 @@ import { userMongoose } from '../../src/config/dataB.js';
 import AuditLog from '../../src/middlewares/auditLog.js';
 
 // Mock dependencies
-jest.mock('../config/dataB.js', () => ({
+jest.mock('../../src/config/dataB.js', () => ({
   userMongoose: {
     Schema: jest.fn(() => ({
       pre: jest.fn(),

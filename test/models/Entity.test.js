@@ -14,7 +14,7 @@ jest.mock('mongoose', () => {
 
   return {
     Schema: jest.fn(() => mSchema),
-    model: jest.fn(),
+    //model: jest.fn(),
   };
 });
 
