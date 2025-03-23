@@ -195,6 +195,7 @@ npm run setup:elasticsearch
 
 # Configure MongoDB Atlas connection in .env file
 # MONGODB_URI_NEW=mongodb+srv://username:password@cluster0.example.mongodb.net/sanctionguard?retryWrites=true&w=majority
+# MONGODB_URI=mongodb+srv://username:password@cluster0.example.mongodb.net/sanctionguard?retryWrites=true&w=majority
 
 # Run database migrations
 npm run migrate
