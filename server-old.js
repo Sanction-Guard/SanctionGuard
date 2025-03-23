@@ -6,15 +6,13 @@ import { connectDB } from './src/config/database.js';
 import { userDB } from './src/config/userDB.js';
 import { connectDBLocal } from './src/config/db.js';
 import { connectDBuser } from './src/config/dataB.js';
-import { connectBlocklistDB } from './src/config/blocklistDB.js';
 import { startScheduler } from './src/services/schedulerServices.js';
 import { logger } from './src/utils/logger.js';
-import searchRoutes from './src/routes/searchRoutes.js';
-import auditRoutes from './src/routes/auditRoutes.js';
+import searchRoutes from './src/routes/searchRoutes.js'; // 👈 Use import
+import auditRoutes from './src/routes/auditRoutes.js'; // 👈 Use import
 import authRoutes from './src/routes/authRoutes.js';
-import importRoutes from './src/routes/importRoutes.js';
-import dataSourceRoutes from './src/routes/dataSourceRoutes.js';
 import dotenv from 'dotenv';
+import dataSourceRoutes from './src/routes/dataSourceRoutes.js'; // From settings page
 import { 
   connections, 
   getLocalEntitiesModel, 
@@ -22,7 +20,7 @@ import {
   getUNEntitiesModel, 
   getUNIndividualsModel, 
   initializeConnections 
-} from './src/utils/dbConnections.js';
+} from './src/utils/dbConnections.js'; // From settings page
 
 // Load environment variables
 dotenv.config();
@@ -42,15 +40,14 @@ app.use((err, req, res, next) => {
       graceful: false,
       message: 'Something went wrong!' 
     });
-});
-
+  });
+  
 async function main() {
     try {
-        // Connect to MongoDB databases
-        await connectDB();
+        // Connect to MongoDB
+    
         await connectDBLocal();
         await connectDBuser();
-        await connectBlocklistDB(); // Connect to BlockList database
         await initializeConnections(); // Settings page DBs (LocalSanction, UNSanction)
 
         // Debug connection states
@@ -61,13 +58,11 @@ async function main() {
             throw new Error('Failed to connect to LocalSanction or UNSanction databases');
         }
 
-        // Wait for userDB connection if not already established
+        // NEW: Wait for userDB connection if not already established
         if (userDB.readyState !== 1) {
           await new Promise((resolve) => userDB.once('open', resolve));
         }
         console.log('User database connection established');
-        
-        logger.info('All database connections established successfully');
 
         // Start the scheduler
         startScheduler();
@@ -75,39 +70,16 @@ async function main() {
         // Import and use the PDF route
         const pdfRoute = (await import('./src/routes/pdfRoute.js')).default;
         app.use('/api/pdf', pdfRoute);
-        
-        // Define all routes
-        app.use('/api/imports', importRoutes);
+
+
         app.use('/api/search', searchRoutes);
         app.use('/api', auditRoutes);
-        app.use('/api/settings', dataSourceRoutes);
+        app.use('/api/settings', dataSourceRoutes); // Settings functionality
         app.use('/api/auth', authRoutes);
-
-        // API status endpoint
-        app.get('/api/status', (req, res) => {
-            res.json({ 
-                status: 'API is running', 
-                timestamp: new Date(),
-                version: '1.3.0',  // Increment version to reflect merged functionality
-                databases: {
-                    un: 'connected',
-                    local: 'connected',
-                    user: 'connected',
-                    blocklist: 'connected',
-                    localSanction: connections.local?.isConnected() ? 'connected' : 'disconnected',
-                    unSanction: connections.un?.isConnected() ? 'connected' : 'disconnected'
-                }
-            });
-        });
 
         // Start the Express server
         const PORT = process.env.PORT || 3001;
-        app.listen(PORT, () => {
-            logger.info(`🚀 Server running on http://localhost:${PORT}`);
-            logger.info('Data import feature is now available at /api/imports/upload');
-            logger.info('Settings and data source management available at /api/settings');
-            logger.info('Auth functionality available at /api/auth');
-        });
+        app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
     } catch (error) {
         logger.error('Application error:', error);
         process.exit(1);
