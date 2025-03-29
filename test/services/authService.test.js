@@ -18,8 +18,8 @@ jest.mock('../../src/config/userDB.js', () => ({
 // Import the module under test
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { User } from '../config/userDB.js';
-import { login } from '../services/authService.js';
+import { User } from '../../src/config/userDB.js';
+import { login } from '../../src/services/authService.js';
 
 describe('Auth Service', () => {
   beforeEach(() => {
