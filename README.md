@@ -45,34 +45,6 @@ npm start
 - MongoDB Atlas account
 - Redis (optional, for caching)
 
-## Configuration
-
-SanctionGuard can be configured through the `.env` file or environment variables:
-
-```
-# API Configuration
-API_KEY=your_api_key
-PORT=3000
-NODE_ENV=production
-
-# MongoDB Atlas Configuration
-MONGODB_URI=mongodb+srv://username:password@cluster0.example.mongodb.net/sanctionguard?retryWrites=true&w=majority
-MONGODB_DB_NAME=sanctionguard
-
-# Elasticsearch Configuration
-ELASTICSEARCH_URL=http://localhost:9200
-ELASTICSEARCH_USERNAME=elastic
-ELASTICSEARCH_PASSWORD=your_password
-ELASTICSEARCH_INDEX_PREFIX=sanctionguard_
-
-# Sanctions Lists Configuration
-SANCTION_LISTS=OFAC,EU,UN
-UPDATE_INTERVAL=86400
-
-# Logging
-LOG_LEVEL=info
-```
-
 ## Usage
 
 ### API Example
